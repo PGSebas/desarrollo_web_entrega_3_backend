@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  pedidos   Pedido[]
+
+  @@map("users")
+}
+
+model Perfume {
+  id              Int      @id @default(autoincrement())
+  nombre          String
+  marca           String
+  precio          Float
+  categoria       String   // hombres | mujeres | unisex
+  tipo            String   // nicho | disenador
+  familiaOlfativa String
+  concentracion   String
+  notas           String
+  imagenUrl       String
+  descripcion     String
+  stock           Int      @default(15)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  pedidos         Pedido[]
+
+  @@map("perfumes")
+}
+
+model Pedido {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  perfumeId      Int
+  perfume        Perfume  @relation(fields: [perfumeId], references: [id], onDelete: Restrict)
+  cantidad       Int      @default(1)
+  direccionEnvio String
+  telefono       String?
+  mensaje        String?
+  estado         String   @default("PENDIENTE") // PENDIENTE | CONFIRMADO | CANCELADO
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("pedidos")
+}
