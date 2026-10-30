@@ -143,3 +143,18 @@ La Inteligencia Artificial se utilizó como asistente de soporte para estructura
 1. Las relaciones de llaves foráneas (`userId`, `perfumeId`) utilizaran restricciones seguras (`onDelete: Cascade` para usuarios y `onDelete: Restrict` para fragancias para evitar pedidos huérfanos).
 2. Se eliminó la inyección de `userId` desde el cuerpo (`body`) en la creación de pedidos, forzando a que se extraiga estrictamente del token JWT verificado en `req.user.id`.
 3. Se afinó el middleware de error para capturar códigos nativos de Prisma (`P2002` y `P2025`) y transformarlos en respuestas limpias `409 Conflict` y `404 Not Found` sin exponer jamás el stack trace en producción.
+
+---
+
+## 🌟 Bonificaciones Implementadas (+6 pts)
+
+| Bonificación | Pts | Estado | Implementación |
+| :--- | :---: | :---: | :--- |
+| **Pruebas automatizadas de los middlewares de autenticación y rol** | **+3 pts** | ✅ **Cumplida** | Suite completa en `tests/auth.middleware.test.ts` con Jest (`npm test`). Valida 401 por falta de token o token corrupto, paso exitoso con JWT válido, 403 por rol no autorizado y paso de admin. |
+| **Filtros combinados en el catálogo (texto, categoría, rango de precio)** | **+2 pts** | ✅ **Cumplida** | Endpoints y repositorio admiten `minPrice`, `maxPrice`, `categoria`, `tipo` y `search` combinados concurrentemente con Prisma. |
+| **Confirmación antes de eliminar en el panel de administración** | **+1 pt** | ✅ **Cumplida** | Diálogo interactivo `confirm(...)` con el nombre de la fragancia antes de invocar `DELETE /api/perfumes/:id`. |
+
+### Cómo ejecutar las pruebas automatizadas:
+```bash
+npm test
+```
