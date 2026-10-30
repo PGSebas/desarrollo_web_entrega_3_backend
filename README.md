@@ -2,10 +2,16 @@
 
 API REST robusta, escalable y segura desarrollada con **Node.js**, **Express**, **TypeScript**, **Prisma ORM** y **PostgreSQL**, estructurada bajo una **arquitectura en 4 capas limpias** (Domain, Application, Infrastructure, Interface).
 
-> **Repositorio de Backend:** [https://github.com/PGSebas/desarrollo_web_entrega_3_backend](https://github.com/PGSebas/desarrollo_web_entrega_3_backend)  
-> **Repositorio de Frontend:** [https://github.com/PGSebas/desarrollo_web_entrega_3_frontend](https://github.com/PGSebas/desarrollo_web_entrega_3_frontend)  
-> **Despliegue Backend:** En configuración para Render / Railway  
-> **Despliegue Frontend:** En configuración para Vercel  
+
+---
+
+## 🌐 Enlaces de Despliegue en Producción
+
+| Entorno / Servicio | Plataforma | Enlace Oficial |
+| :--- | :--- | :--- |
+| **Frontend (Cliente Next.js)** | Vercel | [https://desarrollo-web-entrega-3-frontend.vercel.app](https://desarrollo-web-entrega-3-frontend.vercel.app) |
+| **Backend (API REST Express)** | Render / Railway | [https://desarrollo-web-entrega-3-backend.onrender.com](https://desarrollo-web-entrega-3-backend.onrender.com) |
+| **Repositorio Frontend** | GitHub | [https://github.com/PGSebas/desarrollo_web_entrega_3_frontend](https://github.com/PGSebas/desarrollo_web_entrega_3_frontend) |
 
 ---
 
