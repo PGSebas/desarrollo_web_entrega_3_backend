@@ -13,29 +13,33 @@ export class AppError extends Error {
 export class AuthService {
   constructor(private userRepo: IUserRepository) {}
 
-  async register(dto: RegisterDTO): Promise<AuthResponseDTO> {
-    if (!dto.name || !dto.email || !dto.password) {
+  async register(rawDto: any): Promise<AuthResponseDTO> {
+    const name = rawDto.name || rawDto.nombre;
+    const email = rawDto.email;
+    const password = rawDto.password || rawDto.contrasena;
+
+    if (!name || !email || !password) {
       throw new AppError(400, 'Todos los campos son obligatorios: nombre, email y contraseña.');
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(dto.email)) {
+    if (!emailRegex.test(email)) {
       throw new AppError(400, 'El formato de correo electrónico no es válido.');
     }
 
-    if (dto.password.length < 6) {
+    if (password.length < 6) {
       throw new AppError(400, 'La contraseña debe contener al menos 6 caracteres.');
     }
 
-    const existingUser = await this.userRepo.findByEmail(dto.email.toLowerCase().trim());
+    const existingUser = await this.userRepo.findByEmail(email.toLowerCase().trim());
     if (existingUser) {
       throw new AppError(409, 'Ya existe una cuenta registrada con este correo electrónico.');
     }
 
-    const passwordHash = await PasswordHasher.hash(dto.password);
+    const passwordHash = await PasswordHasher.hash(password);
     const newUser = await this.userRepo.create({
-      name: dto.name.trim(),
-      email: dto.email.toLowerCase().trim(),
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
       password: passwordHash,
       role: 'USER',
     });
@@ -53,17 +57,20 @@ export class AuthService {
     };
   }
 
-  async login(dto: LoginDTO): Promise<AuthResponseDTO> {
-    if (!dto.email || !dto.password) {
+  async login(rawDto: any): Promise<AuthResponseDTO> {
+    const email = rawDto.email;
+    const password = rawDto.password || rawDto.contrasena;
+
+    if (!email || !password) {
       throw new AppError(400, 'Debes ingresar tu correo y contraseña.');
     }
 
-    const user = await this.userRepo.findByEmail(dto.email.toLowerCase().trim());
+    const user = await this.userRepo.findByEmail(email.toLowerCase().trim());
     if (!user || !user.password) {
       throw new AppError(401, 'Credenciales inválidas. Verifica tu correo y contraseña.');
     }
 
-    const isValidPassword = await PasswordHasher.compare(dto.password, user.password);
+    const isValidPassword = await PasswordHasher.compare(password, user.password);
     if (!isValidPassword) {
       throw new AppError(401, 'Credenciales inválidas. Verifica tu correo y contraseña.');
     }

@@ -12,5 +12,6 @@ const authController = new AuthController(authService);
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.get('/me', requireAuth, authController.me);
+router.get('/perfil', requireAuth, authController.me);
 
 export default router;
