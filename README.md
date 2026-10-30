@@ -158,3 +158,42 @@ La Inteligencia Artificial se utilizó como asistente de soporte para estructura
 ```bash
 npm test
 ```
+---
+
+## 📡 Evidencia de Peticiones HTTP en Red (Network DevTools)
+
+Como evidencia del consumo desacoplado en producción y la inyección automática del token JWT mediante la cabecera `Authorization: Bearer <token>`:
+
+### 1. Cabeceras de la Petición Autenticada (`Authorization: Bearer <JWT>`)
+En la solicitud protegida `GET /api/pedidos/mias` se aprecia la inyección del token JWT en `Request Headers`:
+
+![Inyección de Authorization Bearer JWT](docs/screenshots/network-auth-header-jwt.jpg)
+
+### 2. Respuesta Exitosa del Backend (`200 OK` con CORS habilitado)
+Validación de respuesta exitosa del servidor en Render hacia el cliente en Vercel:
+
+![Respuesta 200 OK en Producción](docs/screenshots/network-response-200.jpg)
+
+---
+
+## ✅ Checklist de Entrega Oficial
+
+### Backend
+- [x] Cuatro capas (`domain`, `application`, `infrastructure`, `interface`), Prisma solo en `infrastructure/`.
+- [x] Tablas `users`, `perfumes` (catálogo) y `pedidos` (interacción), con llaves foráneas y seed real.
+- [x] Registro y login con `bcrypt` (salt 10) y `JWT` con expiración.
+- [x] Middleware de auth (`requireAuth`) y de rol (`requireAdmin`) centralizados en enrutadores.
+- [x] Sin token → `401 Unauthorized`; usuario regular borrando catálogo → `403 Forbidden`.
+- [x] CORS configurado con dominio de Vercel; `.env.example` presente; `.env` ausente del repositorio.
+
+### Frontend
+- [x] Mismo sitio de la Entrega 1 en Next.js (App Router) + Tailwind CSS, diseño responsive.
+- [x] Organización por features (`common`, `auth`, `perfumes`, `pedidos`, `admin`) con capas internas (`domain`, `services`, `hooks`, `components`).
+- [x] Cliente HTTP centralizado (`http.ts`) que agrega `Bearer <token>` y redirige a `/login` ante `401`.
+- [x] Sesión persistente con `localStorage` y eventos entre pestañas; botón logout funcional.
+- [x] Rutas privadas protegidas (`/pedidos`, `/pedidos/nuevo`) y `/admin` solo para rol admin; página 404 propia (`not-found.tsx`).
+
+### Entrega
+- [x] Ambos lados desplegados y conectados (Backend en Render, Frontend en Vercel).
+- [x] Las 9 pruebas de la rúbrica pasan en producción (409 duplicado, 401 sin credenciales, catálogo paginado, creación de pedido, etc.).
+- [x] README completo con credenciales de prueba, respuestas técnicas obligatorias y capturas de Network.
