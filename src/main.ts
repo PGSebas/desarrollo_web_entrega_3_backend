@@ -35,6 +35,29 @@ app.use(cors({
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'online',
+    service: 'Noiré Perfumes API REST',
+    version: '1.0.0',
+    description: 'API REST oficial de Noiré Haute Parfumerie (Entrega 3 · Desarrollo Web 2026-2)',
+    endpoints: {
+      health: '/api/health',
+      perfumes: '/api/perfumes',
+      auth: {
+        login: 'POST /api/auth/login',
+        register: 'POST /api/auth/register',
+        profile: 'GET /api/auth/me',
+      },
+      pedidos: {
+        create: 'POST /api/pedidos',
+        mias: 'GET /api/pedidos/mias',
+        all: 'GET /api/pedidos (admin)',
+      },
+    },
+  });
+});
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'online',
