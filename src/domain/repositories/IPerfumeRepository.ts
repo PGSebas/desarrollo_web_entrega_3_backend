@@ -6,6 +6,10 @@ export interface PaginationParams {
   categoria?: string;
   tipo?: string;
   search?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  minPrecio?: number;
+  maxPrecio?: number;
 }
 
 export interface PaginatedResult<T> {

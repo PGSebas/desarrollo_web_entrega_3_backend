@@ -25,6 +25,19 @@ export class PrismaPerfumeRepository implements IPerfumeRepository {
       ];
     }
 
+    const minPrice = params.minPrice !== undefined ? Number(params.minPrice) : (params.minPrecio !== undefined ? Number(params.minPrecio) : undefined);
+    const maxPrice = params.maxPrice !== undefined ? Number(params.maxPrice) : (params.maxPrecio !== undefined ? Number(params.maxPrecio) : undefined);
+
+    if (minPrice !== undefined || maxPrice !== undefined) {
+      where.precio = {};
+      if (minPrice !== undefined && !isNaN(minPrice)) {
+        where.precio.gte = minPrice;
+      }
+      if (maxPrice !== undefined && !isNaN(maxPrice)) {
+        where.precio.lte = maxPrice;
+      }
+    }
+
     const [total, records] = await Promise.all([
       prisma.perfume.count({ where }),
       prisma.perfume.findMany({
